@@ -1,14 +1,10 @@
 <?php 
 class SearchImdbYear{
 
-	private $year; // Start from year. Decrease in loop below
-	//imdb link parameters
-	//$type='tv_movie'; 
-	private $type; 
-	//$sort="alpha"; // sort by alpha because other orders might change // moviemeter 
-	private $sort; 
-	private $start; // increase by 50 
-	//$start="0"; // increase by 50 
+	private $year;
+	private $type;
+	private $sort;
+	private $start; //increase by 50
 	private $pagesCounter; // increase by ++ 
 
 	function __construct( $year, $type, $sort, $start, $pagesCounter ) {
@@ -21,15 +17,9 @@ class SearchImdbYear{
 		$this->createFolders();
 	}
 
-	/*
-		MAIN FUNCTION to START SEARCH 
-	*/
 	public function searchImdb(){
 
 		print ($this->htmlFilename());
-		
-		//while( ( $start += 50 ) < 1200 ):
-		//while( ( $this->start += 50 ) < 1000 ):
 		while( ( $this->start += 50 ) < 1000 ):
 
 			++$this->pagesCounter;
@@ -41,7 +31,6 @@ class SearchImdbYear{
 
 	private function parseSearchresults( $filename ){
 
-		// class name .lister-item-content
 		$collectMovies=[]; // final array to return
 		$currentMovie=[]; // redelare everytime in foreach loop below
 
@@ -49,9 +38,7 @@ class SearchImdbYear{
 		$getLocal = file_get_contents($filename);
 		$dom = new DOMDocument();
 		@$dom->loadHTML($getLocal);
-		// run xpath for the dom
 		$xPath = new DOMXPath($dom);
-		//$elements = $xPath->query("//a/@href");
 		$nodes = $xPath->query("//*[contains(@class, 'lister-item-content')]"); // get all movies nodes
 
 		foreach ( $nodes as $node ){ //lister-item-content
