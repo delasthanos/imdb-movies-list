@@ -13,9 +13,10 @@ $year='2015'; // Start from year. Decrease in loop below
 $type='feature'; 
 //$sort="alpha"; // sort by alpha because other orders might change // moviemeter 
 $sort="moviemeter,asc"; 
-$start="50"; // increase by 50 
+//$start="50"; // increase by 50
+$start="-49"; // increase by 50
 //$start="0"; // increase by 50 
-$pagesCounter="1"; // increase by ++ 
+$pagesCounter="0"; // increase by ++ 
 //$imdbLInk="http://www.imdb.com/search/title?sort=".$sort.",asc&start=".$start."&title_type=".$type."&year=".$year.",".$year; 
 //print $imdbLInk;
 //createFolders($year);
