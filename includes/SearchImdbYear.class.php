@@ -29,6 +29,7 @@ class SearchImdbYear{
 		print ($this->htmlFilename());
 		
 		//while( ( $start += 50 ) < 1200 ):
+		//while( ( $this->start += 50 ) < 1000 ):
 		while( ( $this->start += 50 ) < 1000 ):
 
 			++$this->pagesCounter;
@@ -90,16 +91,59 @@ class SearchImdbYear{
 
 		}
 
+		/*
 		print ("<h1>Showing results start:".$this->start." page file counter ".$this->pagesCounter.": </h1>");
-		//print ('<pre>');
-		//var_dump($collectMovies);
-		//print ('</pre>');
 		print ("<h2>Total:".count($collectMovies)."</h2>");
 		print ('Search link:<a target="_blank" href="'.$this->imdbLink().'">click here</a><br>');
 		foreach ($collectMovies as $movie ){
 			print( $movie['moviename']." ->".$movie['imdb']." &nbsp;&nbsp;&nbsp;&nbsp; ");
 		}
+		*/
+		$this->insertMoviesIntoDB($collectMovies);
+	}
+	
+	private function insertMoviesIntoDB( $collectMovies ){
 
+		$dbh = dbhandler::getInstance(); 
+		$dbConLocal = $dbh->dbCon; 
+		if ( !$dbConLocal ) { 
+			//var_dump($dbh->dbConError);
+			exit(" \n\n db connection error.\n\n "); 
+		}
+		
+		foreach ($collectMovies as $movie ):
+		
+			$moviename=$movie['moviename'];
+			$imdb=$movie['imdb'];
+			$yearmovie=$this->year;
+			$rating=$movie['rating'];
+
+			$insertMovie="INSERT INTO movies_list ( moviename, imdb, yearmovie, rating ) VALUES ( :moviename, :imdb, :yearmovie, :rating ) "; 
+			if ( !$stmt = $dbh->dbh->prepare($insertMovie) ) { 
+				var_dump ( $dbh->dbh->errorInfo() ); 
+			} else { 
+
+				$stmt->bindParam(':moviename', $moviename );
+				$stmt->bindParam(':imdb', $imdb );
+				$stmt->bindParam(':yearmovie', $yearmovie );
+				$stmt->bindParam(':rating', $rating );
+	
+				if (!$stmt->execute() ){
+					if ( in_array( 1062, $stmt->errorInfo() ) ){
+						//print ($n."[#] Already pesisted");
+						printColor("#","yellow");
+					} else { 
+						printColor ($n."[!]error","red+bold");
+						var_dump($stmt->errorInfo());
+						sleep(2);
+						exit();
+					}
+				} else {
+						printColor ("_[#]ok","green+bold");
+				}
+			}
+
+		endforeach;
 	}
 
 	private function getHtmlSearchResults($destination){
