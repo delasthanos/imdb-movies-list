@@ -16,13 +16,11 @@ $sort="moviemeter,asc";
 $start="50"; // increase by 50 
 //$start="0"; // increase by 50 
 $pagesCounter="1"; // increase by ++ 
-
 //$imdbLInk="http://www.imdb.com/search/title?sort=".$sort.",asc&start=".$start."&title_type=".$type."&year=".$year.",".$year; 
 //print $imdbLInk;
 //createFolders($year);
 $searchImdb = new SearchImdbYear( $year, $type, $sort, $start, $pagesCounter );
 $searchImdb->searchImdb();
 // Currently for one year only
-
 exit("\nEND");
 ?>  
