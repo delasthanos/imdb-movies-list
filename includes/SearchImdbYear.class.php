@@ -60,7 +60,9 @@ class SearchImdbYear{
 					foreach ($a as $k){
 
 						$currentMovie['moviename']=$k->nodeValue;
-						$currentMovie['imdb']=$k->getAttribute("href");
+						$getImdbCode = explode("/",$k->getAttribute("href"))[2];
+						//print ('<pre>');//var_dump($getImdbCode);//print ('</pre>');
+						$currentMovie['imdb']=$getImdbCode;
 						//var_dump( $k->nodeValue );
 						//var_dump( $k->getAttribute("href") );
 					}
@@ -77,7 +79,9 @@ class SearchImdbYear{
 
 			}
 
+			print ('<pre>');
 			var_dump($collectMovies);
+			print ('</pre>');
 
 	}
 
